@@ -1,0 +1,36 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.gssh</id>
+  <content_rating type="oars-1.0" />
+  <name>Gssh</name>
+  <summary>A python app that let's you connect to ssh servers from a (really) simple GUI</summary>
+  <description>
+    <p>
+      A python app that let's you connect to ssh servers without setting up anything, Just what you do normally in your server.
+        </p>
+  </description>
+  
+  <screenshots>
+  <screenshot type="default">
+    <caption>The Gssh client</caption>
+    <image type="source" width="448" height="170">https://raw.githubusercontent.com/gssh-linux/gssh/main/Flatpak/Screenshot.png</image>
+  </screenshot>
+  </screenshots>
+  
+  <project_license>GPL-3.0-only</project_license>
+  <metadata_license>CC0-1.0</metadata_license>
+  <developer_name>SStoklosa</developer_name>
+
+
+  <url type="homepage">https://github.com/gssh-linux/gssh</url>
+
+
+  <url type="bugtracker">https://github.com/gssh-linux/gssh/issues</url>
+
+  <!--FIXME: where on the internet users can find help-->
+  <url type="help">https://github.com/gssh-linux/gssh</url>
+ <releases>
+    <release version="1.0" date="2023-08-10" urgency="high">
+    </release>
+    </releases>
+</component>

@@ -41,7 +41,6 @@ vbox.pack_start(user_entry, False, False, 10)
 vbox.pack_start(password_label, False, False, 10)
 vbox.pack_start(password_entry, False, False, 10)
 vbox.pack_start(button, False, False, 10)
-
 window.add(vbox)
 
 window.show_all()
