@@ -8,7 +8,7 @@ finish-args:
   - --socket=x11
   - --socket=wayland
 modules:
-  - name: PleaseRunThat
+  - name: Gssh
     buildsystem: simple
     build-commands:
       - install -D Flatpak/runner.sh /app/bin/runner.sh
@@ -20,4 +20,4 @@ modules:
     sources:
       - type: git
         url: https://github.com/gssh-linux/gssh.git
-        tag: 1.0.1
+        tag: 1.0.2
