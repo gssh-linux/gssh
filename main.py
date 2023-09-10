@@ -12,12 +12,12 @@ def on_button_clicked(button):
     # Create the SSH command
     ssh_command = f"ssh {user}@{ip}"
 
-    # Launch a new terminal window with the SSH command
-    subprocess.Popen(["flatpak spawn --host gnome-terminal", "--", "/bin/bash", "-c", ssh_command])
+    # Launch a new terminal window with the SSH command using flatpak spawn
+    subprocess.Popen(["/usr/bin/flatpak-spawn", "--host", "gnome-terminal", "--", "/bin/bash", "-c", ssh_command])
 
 window = Gtk.Window(title="GSSH")
 window.connect("delete-event", Gtk.main_quit)
-window.set_default_size(400, 300)  # Set the window size to 2x (800x600)
+window.set_default_size(800, 600)  # Set the window size to 800x600
 
 # Create input fields
 ip_label = Gtk.Label(label="IP:")
@@ -41,6 +41,7 @@ vbox.pack_start(user_entry, False, False, 10)
 vbox.pack_start(password_label, False, False, 10)
 vbox.pack_start(password_entry, False, False, 10)
 vbox.pack_start(button, False, False, 10)
+
 window.add(vbox)
 
 window.show_all()
