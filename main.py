@@ -1,22 +1,58 @@
 import gi
 import subprocess
+import signal
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+gi.require_version('Vte', '2.91')
+from gi.repository import Gtk, Vte, GLib
+
+# Global variable to store the terminal process
+terminal_process = None
 
 # Function to handle the button click event
 def on_button_clicked(button):
+    global terminal_process
     ip = ip_entry.get_text()
     user = user_entry.get_text()
 
     # Create the SSH command
     ssh_command = f"ssh {user}@{ip}"
 
-    # Launch a new terminal window with the SSH command
-    subprocess.Popen(["/usr/bin/flatpak-spawn", "--host", "/usr/bin/gnome-terminal", "--", "/bin/bash", "-c", ssh_command])
+    # Create a new terminal widget
+    terminal = Vte.Terminal()
+    terminal.set_size(400, 400)  # Set the terminal size as desired
+    terminal.spawn_sync(
+        Vte.PtyFlags.DEFAULT,
+        None,
+        ["/bin/bash", "-c", ssh_command],
+        [],
+        GLib.SpawnFlags.DEFAULT,
+        None,
+        None,
+    )
+
+    # Create a window for the terminal
+    terminal_window = Gtk.Window(title="SSH Terminal")
+    terminal_window.connect("delete-event", on_terminal_window_close, terminal)
+    terminal_window.add(terminal)
+
+    # Show the terminal window
+    terminal_window.show_all()
+
+    # Store the terminal process
+    terminal_process = terminal
+
+# Function to handle the terminal window close event
+def on_terminal_window_close(window, terminal):
+    global terminal_process
+    if terminal_process:
+        # Kill the SSH process when the terminal window is closed
+        terminal_process.feed_child("\x03")  # Send Ctrl+C to terminate the SSH process
+        terminal_process = None
+    window.destroy()
 
 window = Gtk.Window(title="GSSH")
 window.connect("delete-event", Gtk.main_quit)
-window.set_default_size(400, 300)  # Set the window size to 800x600
+window.set_default_size(400, 400)  # Set the window size to 400x400
 
 # Create input fields
 ip_label = Gtk.Label(label="IP:")
