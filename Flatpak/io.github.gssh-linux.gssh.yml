@@ -1,4 +1,4 @@
-app-id: io.github.gssh-linux
+app-id: io.github.gssh-linux.gssh
 runtime: org.gnome.Platform
 runtime-version: '44'
 sdk: org.gnome.Sdk
@@ -14,9 +14,9 @@ modules:
     build-commands:
       - install -D Flatpak/runner.sh /app/bin/runner.sh
       - install -D main.py /app/bin/main.py
-      - install -D Flatpak/.desktop /app/share/applications/io.github.gssh.desktop
-      - install -D Flatpak/appicon.png /app/share/icons/hicolor/128x128/apps/io.github.gssh-linux.appicon.png
-      - install -D Flatpak/io.github.gssh-linux.appdata.xml /app/share/metainfo/io.github.gssh-linux.appdata.xml
+      - install -D Flatpak/.desktop /app/share/applications/io.github.gssh-linux.gssh.desktop
+      - install -D Flatpak/appicon.png /app/share/icons/hicolor/128x128/apps/io.github.gssh-linux.gssh.appicon.png
+      - install -D Flatpak/io.github.gssh-linux.gssh.appdata.xml /app/share/metainfo/io.github.gssh-linux.gssh.appdata.xml
 
     sources:
       - type: git

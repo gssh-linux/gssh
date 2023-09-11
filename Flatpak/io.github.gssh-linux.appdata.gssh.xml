@@ -1,6 +1,6 @@
  <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>io.github.gssh</id>
+  <id>io.github.gssh-linux.gssh</id>
   <content_rating type="oars-1.0" />
   <name>Gssh</name>
   <summary>A python app that let's you connect to ssh servers from a (really) simple GUI</summary>
@@ -30,7 +30,7 @@
   <!--FIXME: where on the internet users can find help-->
   <url type="help">https://github.com/gssh-linux/gssh</url>
  <releases>
-    <release version="1.1.2" date="2023-08-10" urgency="high">
+    <release version="1.1.4" date="2023-08-10" urgency="high">
     </release>
     </releases>
 </component>
