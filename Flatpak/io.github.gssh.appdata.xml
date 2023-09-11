@@ -30,7 +30,7 @@
   <!--FIXME: where on the internet users can find help-->
   <url type="help">https://github.com/gssh-linux/gssh</url>
  <releases>
-    <release version="1.1.1" date="2023-08-10" urgency="high">
+    <release version="1.1.2" date="2023-08-10" urgency="high">
     </release>
     </releases>
 </component>

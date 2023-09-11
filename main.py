@@ -12,7 +12,7 @@ def on_button_clicked(button):
     ssh_command = f"ssh {user}@{ip}"
 
     # Launch a new terminal window with the SSH command
-    subprocess.Popen(["/usr/bin/flatpak-spawn","/usr/bin/gnome-terminal", "--", "/bin/bash", "-c", ssh_command])
+    subprocess.Popen(["/usr/bin/flatpak-spawn", "--host", "/usr/bin/gnome-terminal", "--", "/bin/bash", "-c", ssh_command])
 
 window = Gtk.Window(title="GSSH")
 window.connect("delete-event", Gtk.main_quit)
