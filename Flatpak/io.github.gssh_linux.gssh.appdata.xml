@@ -1,6 +1,6 @@
  <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>io.github.gssh-linux.gssh</id>
+  <id>io.github.gssh_linux.gssh</id>
   <content_rating type="oars-1.0" />
   <name>Gssh</name>
   <summary>A python app that let's you connect to ssh servers from a (really) simple GUI</summary>
