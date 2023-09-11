@@ -7,26 +7,22 @@ from gi.repository import Gtk
 def on_button_clicked(button):
     ip = ip_entry.get_text()
     user = user_entry.get_text()
-    password = password_entry.get_text()
 
     # Create the SSH command
     ssh_command = f"ssh {user}@{ip}"
 
-    # Launch a new terminal window with the SSH command using flatpak spawn
-    subprocess.Popen(["/usr/bin/flatpak-spawn", "--host", "gnome-terminal", "--", "/bin/bash", "-c", ssh_command])
+    # Launch a new terminal window with the SSH command
+    subprocess.Popen(["gnome-terminal", "--", "/bin/bash", "-c", ssh_command])
 
 window = Gtk.Window(title="GSSH")
 window.connect("delete-event", Gtk.main_quit)
-window.set_default_size(400, 300)  # Set the window size to 800x600
+window.set_default_size(800, 600)  # Set the window size to 800x600
 
 # Create input fields
 ip_label = Gtk.Label(label="IP:")
 ip_entry = Gtk.Entry()
 user_label = Gtk.Label(label="User:")
 user_entry = Gtk.Entry()
-password_label = Gtk.Label(label="Password:")
-password_entry = Gtk.Entry()
-password_entry.set_visibility(False)  # To hide the password as you type
 
 # Create a button
 button = Gtk.Button(label="Connect")
@@ -38,8 +34,6 @@ vbox.pack_start(ip_label, False, False, 10)  # Increased spacing for better layo
 vbox.pack_start(ip_entry, False, False, 10)
 vbox.pack_start(user_label, False, False, 10)
 vbox.pack_start(user_entry, False, False, 10)
-vbox.pack_start(password_label, False, False, 10)
-vbox.pack_start(password_entry, False, False, 10)
 vbox.pack_start(button, False, False, 10)
 
 window.add(vbox)

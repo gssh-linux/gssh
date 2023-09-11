@@ -6,7 +6,11 @@ __pycache__/
 # C extensions
 *.so
 
+
+
 # Distribution / packaging
+.flatpak-builder
+build-dir
 .Python
 build/
 develop-eggs/

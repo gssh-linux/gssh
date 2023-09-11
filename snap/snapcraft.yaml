@@ -1,0 +1,19 @@
+name: gssh
+summary: a ui for ssh
+description: |
+    gssh is a tool that let's you connect to ssh servers by using a simple GUI
+base: core22
+version: 1.0.0
+confinement: strict
+
+parts:
+  gssh:
+    plugin: python
+    source: .
+    source-type: git
+    stage-packages:
+       - python-gobject-2-dev
+
+apps:
+  gssh:
+    command: main

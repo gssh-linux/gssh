@@ -9,6 +9,7 @@ finish-args:
   - --socket=wayland
   - --share=ipc
   - --socket=system-bus
+  - --talk-name=org.freedesktop.Flatpak
 modules:
   - name: Gssh
     buildsystem: simple
