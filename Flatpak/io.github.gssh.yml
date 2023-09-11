@@ -6,7 +6,6 @@ command: runner.sh
 finish-args:
   - --share=network
   - --socket=x11
-  - --socket=wayland
   - --share=ipc
   - --talk-name=org.freedesktop.Flatpak
 modules:
