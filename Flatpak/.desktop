@@ -5,4 +5,4 @@ Type=Application
 Terminal=false
 Exec=runner.sh
 Name=Gssh
-Icon=io.github.gssh_linux.gssh.appicon.png
+Icon=io.github.gssh_linux.gssh.appicon
