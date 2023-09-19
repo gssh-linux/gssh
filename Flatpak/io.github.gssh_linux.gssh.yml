@@ -1,12 +1,14 @@
 app-id: io.github.gssh_linux.gssh
 runtime: org.gnome.Platform
 runtime-version: '44'
+runtime-options:
 sdk: org.gnome.Sdk
 command: runner.sh
 finish-args:
   - --share=network
   - --socket=x11
   - --share=ipc
+  - --env=GI_TYPELIB_PATH=/app/lib/girepository-1.0
 modules:
   - name: Gssh
     buildsystem: simple
@@ -21,3 +23,23 @@ modules:
       - type: git
         url: https://github.com/gssh-linux/gssh.git
         tag: 1.1.9
+  - name: vte
+    buildsystem: meson
+    config-opts:
+      - "-Dglade=false"
+      - "-Dgtk3=true"
+      - "-Dgtk4=false"
+      - "-Dvapi=false"
+    sources:
+      - type: git
+        url: https://gitlab.gnome.org/GNOME/vte.git
+        branch: master
+
+  - name: org.gnome.Platform
+    version: 44
+    runtime: org.gnome.Platform
+    sdk: org.gnome.Sdk
+    override: true
+    build-options:
+      # Add the Vte extension
+      - --share=lib/vte 
