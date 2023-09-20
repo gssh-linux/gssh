@@ -1,7 +1,23 @@
 import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('Vte', '2.91')
-from gi.repository import Gtk, Vte, GLib
+from gi.repository import Gtk, Vte, GLib, Gdk
+# Initialize the GTK application
+app = Gtk.Application()
+
+# Create a function to set the GTK theme based on the system's theme
+def set_gtk_theme():
+    # Get the current system theme name
+    screen = Gdk.Screen.get_default()
+    settings = Gtk.Settings.get_for_screen(screen)
+    current_theme = settings.get_property("gtk-theme-name")
+    print(f"Current theme: {current_theme}")
+    # Set the GTK theme for the application
+    Gtk.Settings.get_default().set_property("gtk-theme-name", current_theme)
+
+# Call the function to set the initial GTK theme
+set_gtk_theme()
+
 
 # Global variable to store the terminal process
 terminal_process = None
