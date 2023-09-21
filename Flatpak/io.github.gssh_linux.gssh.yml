@@ -23,7 +23,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/gssh-linux/gssh.git
-        tag: 1.2.4
+        tag: 1.2.5
         
   - name: vte
     buildsystem: meson
