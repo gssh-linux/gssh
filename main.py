@@ -1,9 +1,60 @@
 import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('Vte', '2.91')
-from gi.repository import Gtk, Vte, GLib, Gdk
+gi.require_version('Gio', '2.0')
+from gi.repository import Gtk, Vte, GLib, Gdk, Gio
+import subprocess
 # Initialize the GTK application
 app = Gtk.Application()
+
+
+
+# Function to handle the "Generate SSH keys" button click event
+def generate_ssh_keys(button):
+    dialog = Gtk.FileChooserDialog(
+        "Save SSH Keys",
+        None,
+        Gtk.FileChooserAction.SAVE,
+        (
+            Gtk.STOCK_CANCEL,
+            Gtk.ResponseType.CANCEL,
+            Gtk.STOCK_SAVE,
+            Gtk.ResponseType.OK,
+        ),
+    )
+
+    dialog.set_do_overwrite_confirmation(True)
+
+    # Add a "Name" entry to specify the key name
+    name_label = Gtk.Label("Name:")
+    name_entry = Gtk.Entry()
+    dialog.set_extra_widget(name_label)
+    dialog.set_extra_widget(name_entry)
+
+    response = dialog.run()
+
+    if response == Gtk.ResponseType.OK:
+        # Get the chosen file path and name from the dialog
+        file_path = dialog.get_filename()
+        key_name = name_entry.get_text()
+        if not key_name:
+            key_name = "id_rsa"  # Default key name
+
+        # Generate SSH keys without a passphrase
+        ssh_keygen_command = f"ssh-keygen -t rsa -b 4096 -N \"\" -C {key_name} -f {file_path}"
+        
+        try:
+            subprocess.run(ssh_keygen_command, shell=True, check=True)
+        except subprocess.CalledProcessError as e:
+            # Handle any errors that occur during key generation
+            print(f"Error: {e}")
+    
+    dialog.destroy()
+
+
+
+
+
 
 # Create a function to set the GTK theme based on the system's theme
 def set_gtk_theme():
@@ -78,6 +129,10 @@ user_entry = Gtk.Entry()
 button = Gtk.Button(label="Connect")
 button.connect("clicked", on_button_clicked)
 
+# Create a button to generate SSH keys
+generate_button = Gtk.Button(label="Generate SSH Keys")
+generate_button.connect("clicked", generate_ssh_keys)
+
 # Create a vertical box to hold the widgets
 vbox = Gtk.VBox()
 vbox.pack_start(ip_label, False, False, 10)  # Increased spacing for better layout
@@ -85,6 +140,7 @@ vbox.pack_start(ip_entry, False, False, 10)
 vbox.pack_start(user_label, False, False, 10)
 vbox.pack_start(user_entry, False, False, 10)
 vbox.pack_start(button, False, False, 10)
+vbox.pack_start(generate_button, False, False, 10)
 
 window.add(vbox)
 
