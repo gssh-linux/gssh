@@ -5,6 +5,7 @@ gi.require_version('Gio', '2.0')
 from gi.repository import Gtk, Vte, GLib, Gdk, Gio
 import subprocess
 import os
+from ssh_key_manager import generate_ssh_key 
 # Initialize the GTK application
 app = Gtk.Application()
 
@@ -39,33 +40,12 @@ def generate_ssh_keys(button):
         if not key_name:
             key_name = "id_rsa"  # Default key name
 
-        try:
-            # Ensure the chosen directory is in /home
-            if not file_path.startswith("/home"):
-                raise ValueError("SSH keys must be saved in /home directory")
-
-            # Ensure the file doesn't exist by appending a timestamp to the filename
-            timestamp = GLib.get_real_time()  # Get current timestamp
-            unique_file_path = f"{file_path}_{timestamp}"
-
-            # Generate SSH keys without a passphrase
-            ssh_keygen_command = f"ssh-keygen -t rsa -b 4096 -N \"\" -C {key_name} -f {unique_file_path}"
-
-            subprocess.run(ssh_keygen_command, shell=True, check=True)
-
-            # Rename the generated file to the original filename
-            os.rename(unique_file_path, file_path)
-        except Exception as e:
-            # Handle errors with error dialogs
-            error_dialog = Gtk.MessageDialog(
-                parent=window,
-                flags=Gtk.DialogFlags.MODAL,
-                type=Gtk.MessageType.ERROR,
-                buttons=Gtk.ButtonsType.OK,
-                message_format=str(e),
-            )
-            error_dialog.run()
-            error_dialog.destroy()
+        success, error_message = generate_ssh_key(key_name, file_path)
+        
+        if success:
+            print("SSH key generation successful.")
+        else:
+            print(f"SSH key generation failed: {error_message}")
 
     dialog.destroy()
 
