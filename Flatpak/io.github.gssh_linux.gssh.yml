@@ -19,6 +19,7 @@ modules:
       - install -D Flatpak/gssh.desktop /app/share/applications/io.github.gssh_linux.gssh.desktop
       - install -D Flatpak/io.github.gssh_linux.gssh.appicon.png /app/share/icons/hicolor/512x512/apps/io.github.gssh_linux.gssh.appicon.png
       - install -D Flatpak/io.github.gssh_linux.gssh.appdata.xml /app/share/metainfo/io.github.gssh_linux.gssh.appdata.xml
+      - install -D ssh_key_manager.py /app/bin/ssh_key_manager.py
 
     sources:
       - type: git
