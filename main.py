@@ -9,6 +9,26 @@ import time
 # Initialize the GTK application
 app = Gtk.Application()
 
+# Function to handle the "Mount" button click event
+def on_mount_button_clicked(button):
+    ip = ip_entry.get_text()
+    user = user_entry.get_text()
+    mount_point = "/app/mountdir"
+    # Create the SSHFS mount command
+    sshfs_command = f"sshfs {user}@{ip}:/ {mount_point}"
+
+    try:
+        # Mount the remote SSH server files using SSHFS
+        subprocess.run(sshfs_command, shell=True, check=True)
+
+        # Open the file manager using xdg-open on the mounted directory
+        subprocess.Popen(["xdg-open", mount_point])
+
+        print("SSH server files mounted successfully.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error: {e}")
+        # Handle any error that occurs during mounting here
+
 def generate_ssh_key(key_name, file_path):
     try:
         # Ensure the chosen directory is in /home
