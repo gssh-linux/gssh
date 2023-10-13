@@ -138,7 +138,7 @@ window.connect("delete-event", Gtk.main_quit)
 window.set_default_size(400, 400)  # Set the window size to 400x400
 
 # Create input fields
-ip_label = Gtk.Label(label="IP:")
+ip_label = Gtk.Label(label="IP Addrees:")
 ip_entry = Gtk.Entry()
 user_label = Gtk.Label(label="User:")
 user_entry = Gtk.Entry()
