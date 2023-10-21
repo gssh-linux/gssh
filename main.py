@@ -6,11 +6,64 @@ from gi.repository import Gtk, Vte, GLib, Gdk, Gio
 import subprocess
 import os
 import time
+import json
+
+try:
+  port_file = open("settings.json")
+  value = json.load(port_file)
+  saved_port = value["port"]
+except:
+ saved_port = 22
+
+
 # Initialize the GTK application
 app = Gtk.Application()
+# Function to open the settings window
+def open_settings_window(button):
+    settings_window = Gtk.Window(title="Settings")
+    settings_window.set_default_size(300, 200)
 
+    # Create settings widgets (e.g., buttons, entries, labels) here
+    # Create an entry for SSH port
+    port_entry = Gtk.Entry()
+    port_entry.set_text(str(get_saved_setting("port", 22)))  # Initialize with the default value
+
+    # Add settings widgets to a vertical box
+    settings_vbox = Gtk.VBox()
+    settings_vbox.pack_start(Gtk.Label("SSH Default Port:"), False, False, 5)
+    settings_vbox.pack_start(port_entry, False, False, 5)
+
+    # Create a "Save" button to save settings
+    save_button = Gtk.Button(label="Save")
+    save_button.connect("clicked", lambda btn: save_settings(port_entry.get_text()))
+    settings_vbox.pack_end(save_button, False, False, 5)
+
+    settings_window.add(settings_vbox)
+    settings_window.show_all()
+
+# Function to save settings to a JSON file
+def save_settings(port):
+    global saved_port
+    settings = {
+        "port": int(port),  # Convert the port to an integer
+        # Add more settings here
+    }
+    with open("settings.json", "w") as f:
+        json.dump(settings, f)
+    saved_port = int(port)
+
+def get_saved_setting(setting_name, default_value):
+    try:
+        with open("settings.json", "r") as f:
+            settings = json.load(f)
+            return settings.get(setting_name, default_value)
+    except FileNotFoundError:
+        return default_value
+
+    
 def generate_ssh_key(key_name, file_path):
     try:
+
         # Ensure the chosen directory is in /home
         if not file_path.startswith("/home"):
             raise ValueError("SSH keys must be saved in /home directory")
@@ -88,21 +141,25 @@ def set_gtk_theme():
 set_gtk_theme()
 
 
+# Function to handle the button click event
 # Global variable to store the terminal process
 terminal_process = None
 
-# Function to handle the button click event
 def on_button_clicked(button):
     global terminal_process
     ip = ip_entry.get_text()
     user = user_entry.get_text()
+    
 
-    # Create the SSH command
-    ssh_command = f"ssh {user}@{ip}"
+    if ":" in ip:
+     ssh_command = f"ssh {user}@{ip}"
+    else:
+     # Create the SSH command
+     ssh_command = f"ssh {user}@{ip} -p {saved_port}" 
 
     # Create a new terminal widget
     terminal = Vte.Terminal()
-    terminal.set_size(400, 400)  # Set the terminal size as desired
+    terminal.set_size(200, 200)  # Set the terminal size as desired
     terminal.spawn_sync(
         Vte.PtyFlags.DEFAULT,
         None,
@@ -133,6 +190,10 @@ def on_terminal_window_close(window, terminal):
         terminal_process = None
     window.destroy()
 
+
+
+
+
 window = Gtk.Window(title="GSSH")
 window.connect("delete-event", Gtk.main_quit)
 window.set_default_size(400, 400)  # Set the window size to 400x400
@@ -160,6 +221,11 @@ vbox.pack_start(user_entry, False, False, 10)
 vbox.pack_start(button, False, False, 10)
 vbox.pack_start(generate_button, False, False, 10)
 
+
+# Create a button to open the settings window
+settings_button = Gtk.Button(label="Settings")
+settings_button.connect("clicked", open_settings_window)
+vbox.pack_start(settings_button, False, False, 10)  
 window.add(vbox)
 
 window.show_all()
