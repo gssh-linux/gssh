@@ -5,4 +5,4 @@ Type=Application
 Terminal=false
 Exec=gssh
 Name=Gssh
-Icon=io.github.gssh_linux.gssh.appicon
+Icon=io.github.gssh_linux.gssh
