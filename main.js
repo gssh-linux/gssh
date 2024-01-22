@@ -10,10 +10,12 @@ const createWindow = () => {
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
+            allowRunningInsecureContent: true,
         },
     })
 
     win.loadFile('index.html')
+    win.openDevTools();
 }
 app.whenReady().then(() => {
     createWindow()

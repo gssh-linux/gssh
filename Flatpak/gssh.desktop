@@ -3,6 +3,6 @@ Encoding=UTF-8
 Version=1.0
 Type=Application
 Terminal=false
-Exec=runner.sh
+Exec=gssh
 Name=Gssh
 Icon=io.github.gssh_linux.gssh.appicon

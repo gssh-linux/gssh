@@ -2,36 +2,52 @@ app-id: io.github.gssh_linux.gssh
 runtime: org.gnome.Platform
 runtime-version: '45'
 sdk: org.gnome.Sdk
-command: runner.sh
+command: gssh
+separate-locales: false
 finish-args:
+  - --persist=/var
   - --share=network
-  - --socket=fallback-x11
+  - --device=dri
+  - --socket=x11
   - --socket=wayland
+  - --socket=pulseaudio
   - --share=ipc
-  - --socket=ssh-auth
-  - --filesystem=home
 modules:
-  - name: Gssh
+  - name: unappimage
     buildsystem: simple
     build-commands:
-      - install -Dm755 Flatpak/runner.sh /app/bin/runner.sh
-      - install -D main.py /app/bin/main.py
-      - install -D Flatpak/gssh.desktop /app/share/applications/io.github.gssh_linux.gssh.desktop
-      - install -D Flatpak/io.github.gssh_linux.gssh.appicon.png /app/share/icons/hicolor/512x512/apps/io.github.gssh_linux.gssh.appicon.png
-      - install -D Flatpak/io.github.gssh_linux.gssh.appdata.xml /app/share/metainfo/io.github.gssh_linux.gssh.appdata.xml
+      - make -C squashfs-tools install INSTALL_DIR=/app/bin
     sources:
       - type: git
-        url: https://github.com/gssh-linux/gssh.git
-        tag: 1.3.2
-        
-  - name: vte
-    buildsystem: meson
-    config-opts:
-      - "-Dglade=false"
-      - "-Dgtk3=true"
-      - "-Dgtk4=false"
-      - "-Dvapi=false"
+        url: https://github.com/refi64/unappimage
+        commit: d7f86f2a0d7ec3a69211125207d5f127386b849a
+
+  - name: gssh
+    buildsystem: simple
+    cleanup:
+      - squashfs-root
     sources:
-      - type: archive
-        url: https://download.gnome.org/sources/vte/0.74/vte-0.74.0.tar.xz
-        sha256: 9ae08f777952ba793221152d360550451580f42d3b570e3341ebb6841984c76b
+      - type: extra-data
+        url: https://github.com/gssh-linux/gssh/releases/download/1.3.4/gssh-1.0.0.AppImage
+        size: 116730498
+        sha256: e8e0063643321ce648e7087dd8eb5a967bd454558d012f4fbe4152d1ee185e19
+        filename: gssh.appimage
+        x-checker-data:
+          type: electron-updater
+
+      - type: script
+        dest-filename: gssh
+        commands:
+          - exec zypak-wrapper /app/extra/bin/launcher --no-sandbox "$0"
+
+      - type: git
+        url: https://github.com/gssh-linux/gssh.git
+        tag: 1.3.4
+
+
+    build-commands:
+      - install -D ./Flatpak/apply_extra.sh "${FLATPAK_DEST}/bin/apply_extra"
+      - install gssh "${FLATPAK_DEST}/bin/"
+      - install -Dm644 /Flatpak/gssh.desktop "${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop"
+      - install -Dm644 /Flatpak/io.github.gssh_linux.gssh.appdata.xml "${FLATPAK_DEST}/share/metainfo/${FLATPAK_ID}.appdata.xml"
+      - install  -Dm644 -t ${FLATPAK_DEST}/share/icons/hicolor/256x256/apps /Flatpak/io.github.gssh_linux.gssh.appicon.png
